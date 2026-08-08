@@ -1,4 +1,4 @@
-This software is free to use and distribute under the GNU General Public License v3.0.
+This software is free to use and distribute under the GPL General Public License v3.0.
 
 This software contains/will contain next features:
   status:    feature:
