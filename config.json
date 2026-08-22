@@ -1,0 +1,7 @@
+{
+    "check_info": "True",
+    "check_firstname": "True",
+    "ckeck_secondname": "True",
+    "check_day_of_birth": "True",
+    "check_email": "True"
+}
