@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - Version Info</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; display: flex; background: #f4f6f9; height: 100vh; }
+        
+        /* Sivupalkki */
+        .sidebar { width: 250px; background: #2c3e50; color: white; padding: 20px; display: flex; flex-direction: column; gap: 10px; position: relative; z-index: 10; }
+        .sidebar h3 { margin-top: 0; color: #ecf0f1; font-size: 1.2rem; border-bottom: 1px solid #34495e; padding-bottom: 10px; }
+        .menu-item { padding: 12px; border-radius: 6px; cursor: pointer; color: #bdc3c7; text-decoration: none; transition: 0.2s; display: block; }
+        .menu-item:hover { background: #34495e; color: white; }
+        .menu-item.active { background: #3498db; color: white; font-weight: bold; }
+        
+        /* Taso 1: Päävalikon säiliö */
+        .menu-container { position: relative; }
+        
+        /* Taso 2: Ensimmäinen alavalikko */
+        .submenu { 
+            position: absolute;
+            left: 100%;       
+            top: 0;
+            width: 200px;
+            background: #1a252f; 
+            padding: 10px; 
+            border-radius: 6px; 
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.2);
+            margin-left: 5px; 
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(-10px); 
+            transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+            z-index: 20;
+        }
+        
+        .submenu-item { 
+            display: block; 
+            padding: 10px 15px; 
+            color: #95a5a6; 
+            text-decoration: none; 
+            font-size: 0.9rem; 
+            border-radius: 4px; 
+            transition: 0.2s; 
+        }
+        .submenu-item:hover { 
+            background: #34495e; 
+            color: #3498db; 
+        }
+        
+        /* AKTIVOINTI Taso 2 */
+        .menu-container:hover > .submenu { 
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0); 
+        }
+        
+        /* Sivun muu sisältö */
+        .content { flex: 1; padding: 30px; overflow-y: auto; }
+        .toolbar { display: flex; gap: 15px; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); align-items: center; margin-bottom: 20px; }
+        .search-bar { width: 300px; padding: 10px 15px; border: 1px solid #ced4da; border-radius: 6px; font-size: 0.9rem; }
+        .search-bar:focus { outline: none; border-color: #3498db; }
+        
+        /* Painikkeen tyylit */
+        .btn-export { padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.2s; text-decoration: none; }
+        .btn-export:hover { background: #2980b9; }
+
+        /* Tekstisisällön tyylit */
+        .main-title { font-size: 2rem; color: #2c3e50; margin: 0 0 5px 0; }
+        .subtitle { color: #7f8c8d; margin: 0 0 25px 0; font-size: 1rem; }
+        .text-card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        .text-card h2 { margin-top: 0; color: #2c3e50; font-size: 1.3rem; margin-bottom: 15px; }
+        
+        /* Versiotietojen tyylit */
+        .info-row { display: flex; margin-bottom: 10px; font-size: 0.95rem; color: #34495e; }
+        .info-label { width: 150px; font-weight: 600; color: #7f8c8d; }
+        .info-value { font-family: monospace; background: #f8f9fa; padding: 2px 6px; border-radius: 4px; }
+        .status-error { color: #c62828; font-weight: 500; }
+    </style>
+</head>
+<body>
+
+    <!-- Sivupalkki -->
+    <div class="sidebar">
+        <h3>Teacher Dashboard</h3>
+        <a href="teacher-dashboard.html" class="menu-item">Home</a>
+
+        <!-- Exam Info -->
+        <div class="menu-container">
+            <a href="#" class="menu-item">Exam Info</a>
+            <div class="submenu">
+                <a href="exam-status.html" class="submenu-item">Exam status</a>
+                <a href="students.html" class="submenu-item">Students</a>
+                <a href="exam-maker.html" class="submenu-item">Exam Maker (EXMA)</a>
+                <a href="preview-exam.html" class="submenu-item">Preview Exam</a>
+                <a href="logs.html" class="submenu-item">Logs</a>
+            </div>
+        </div>
+
+        <!-- INFO -->
+        <div class="menu-container">
+            <a href="#" class="menu-item">Info</a>
+            <div class="submenu">
+                <a href="teacher-version-info.html" class="submenu-item active">Version Info</a>
+                <a href="teacher-License & Info.html" class="submenu-item">License & Copyright</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sisältöalue -->
+    <div class="content">
+        <!-- Työkalupalkki -->
+        <div class="toolbar">
+            <input type="text" class="search-bar" placeholder="Search records...">
+            <button class="btn-export" onclick="window.location.href='export.php';">Export Data</button>
+        </div>
+
+        <!-- Tekstisisältö -->
+        <h1 class="main-title">Version Info</h1>
+        <p class="subtitle">System environment and version details.</p>
+        
+        <div class="text-card">
+            <h2>System Details</h2>
+            <div id="version-display">
+                <div class="info-row">Loading information...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT OIKEELLA TIEDOSTOPOLULLA -->
+    <script>
+        // Korjattu polku kuvan mukaiseksi (noustaan kaksi tasoa ylös)
+        const JSON_FILE_PATH = "../../config.json"; 
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const displayContainer = document.getElementById("version-display");
+
+            fetch(JSON_FILE_PATH)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("HTTP error " + response.status);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    displayContainer.innerHTML = `
+                        <div class="info-row">
+                            <span class="info-label">Version Number:</span>
+                            <span class="info-value">v${data.version_number}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Release Date:</span>
+                            <span class="info-value">${data.release_date}</span>
+                        </div>
+                    `;
+                })
+                .catch(error => {
+                    displayContainer.innerHTML = `<span class="status-error">Error loading version information.</span>`;
+                    console.error("Error fetching version info:", error);
+                });
+        });
+    </script>
+</body>
+</html>

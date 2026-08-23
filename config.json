@@ -1,7 +1,9 @@
 {
     "check_info": "True",
     "check_firstname": "True",
-    "ckeck_secondname": "True",
+    "check_secondname": "True",
     "check_day_of_birth": "True",
-    "check_email": "True"
+    "check_email": "True",
+    "version_number": "1.0.0",
+    "release_date": "2026-06-15"
 }
